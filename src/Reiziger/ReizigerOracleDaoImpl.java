@@ -154,17 +154,19 @@ public class ReizigerOracleDaoImpl extends Application.OracleBaseDAO implements 
     public Reiziger update(Reiziger reiziger){
         try {
             String query;
-            query = "UPDATE REIZIGER" +
-                    "SET VOORLETTERS=?" +
-                    "TUSSENVOEGSEL=?" +
-                    "ACHTERNAAM=?" +
-                    "GEBORTEDATUM=?";
+            query = "UPDATE REIZIGER " +
+                    "SET VOORLETTERS=?," +
+                    "TUSSENVOEGSEL=?," +
+                    "ACHTERNAAM=?," +
+                    "GEBORTEDATUM=? " +
+                    "WHERE REIZIGERID = ?";
 
             PreparedStatement preparedStatement = this.getConnection().prepareStatement(query);
             preparedStatement.setString(1, reiziger.getVoorletters());
             preparedStatement.setString(2, reiziger.getTussenvoegsel());
             preparedStatement.setString(3, reiziger.getAchternaam());
             preparedStatement.setDate(4, reiziger.getGeboortedatum());
+            preparedStatement.setInt(5, reiziger.getReizigerID());
 
             boolean succes = preparedStatement.execute();
             this.getConnection().commit();

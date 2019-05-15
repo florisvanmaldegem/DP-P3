@@ -87,6 +87,7 @@ public class Reiziger {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+        sb.append("[").append(this.getReizigerID()).append("]");
         sb.append(this.getNaam());
         sb.append("(");
         sb.append(this.getGeboortedatum().toLocalDate().toString());

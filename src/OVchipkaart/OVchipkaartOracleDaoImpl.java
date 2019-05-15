@@ -60,7 +60,7 @@ public class OVchipkaartOracleDaoImpl extends Application.OracleBaseDAO implemen
     public OVchipkaart save(OVchipkaart oVchipkaart) {
         try {
             String query;
-            query = "INSERT INTO OVCHIPKAART(KAARTNUMMER, GELDIGTOT, KLASSE, SALDO, REIZIGERID)" +
+            query = "INSERT INTO OV_CHIPKAART(KAARTNUMMER, GELDIGTOT, KLASSE, SALDO, REIZIGERID)" +
                     "VALUES(?,?,?,?,?)";
             PreparedStatement preparedStatement = this.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, oVchipkaart.getKaartNummer());
@@ -82,17 +82,19 @@ public class OVchipkaartOracleDaoImpl extends Application.OracleBaseDAO implemen
     public OVchipkaart update(OVchipkaart oVchipkaart) {
         try {
             String query;
-            query = "UPDATE OV_CHIPKAART" +
-                    "SET GELDIGTOT=?" +
-                    "KLASSE=?" +
-                    "SALDO=?" +
-                    "REIZIGERID=?";
+            query = "UPDATE OV_CHIPKAART " +
+                    "SET GELDIGTOT=?," +
+                    "KLASSE=?," +
+                    "SALDO=?," +
+                    "REIZIGERID=? " +
+                    "WHERE KAARTNUMMER=?";
 
             PreparedStatement preparedStatement = this.getConnection().prepareStatement(query);
             preparedStatement.setDate(1, oVchipkaart.getGeldigTot());
             preparedStatement.setInt(2, oVchipkaart.getKlasse());
             preparedStatement.setFloat(3, oVchipkaart.getSaldo());
             preparedStatement.setInt(4, oVchipkaart.getEigenaar().getReizigerID());
+            preparedStatement.setInt(5, oVchipkaart.getKaartNummer());
 
             preparedStatement.execute();
             this.getConnection().commit();

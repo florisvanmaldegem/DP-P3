@@ -19,6 +19,7 @@ public abstract class OracleBaseDAO {
         }
         // Leg de connectie met de database
         conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+        conn.setAutoCommit(false);
     }
 
     protected Connection getConnection(){
