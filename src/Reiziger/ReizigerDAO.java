@@ -6,15 +6,11 @@ public interface ReizigerDAO {
 
     List<Reiziger> findAll();
 
-    List<Reiziger> findByGbDatum(String gbDatum);
-
-    List<Reiziger> findByName(String gbDatum);
-
-    Reiziger findById(int id);
+    List<Reiziger> findByGbDatum(java.sql.Date gbDatum);
 
     Reiziger save(Reiziger reiziger);
 
-    Reiziger update(Reiziger reiziger, int id);
+    Reiziger update(Reiziger reiziger);
 
     Boolean delete(Reiziger reiziger);
 
