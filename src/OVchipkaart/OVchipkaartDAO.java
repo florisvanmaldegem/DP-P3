@@ -14,4 +14,6 @@ public interface OVchipkaartDAO {
     List<OVchipkaart> findByReiziger(Reiziger reiziger);
 
     List<OVchipkaart> findAll();
+
+    OVchipkaart findByKaartnummer(int number);
 }

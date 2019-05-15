@@ -14,6 +14,49 @@ public class OVchipkaartOracleDaoImpl extends Application.OracleBaseDAO implemen
     }
 
     @Override
+    public OVchipkaart findByKaartnummer(int number){
+        try {
+            String query;
+            query = "SELECT * FROM OV_CHIPKAART WHERE KAARTNUMMER = ?";
+
+            PreparedStatement preparedStatement = this.getConnection().prepareStatement(query);
+            preparedStatement.setInt(1, number);
+
+            ResultSet resultC = preparedStatement.executeQuery();
+
+            resultC.next();
+
+            OVchipkaart chipkaart = new OVchipkaart();
+            chipkaart.setKaartNummer(resultC.getInt("KAARTNUMMER"));
+            chipkaart.setGeldigTot(resultC.getDate("GELDIGTOT"));
+            chipkaart.setKlasse(resultC.getInt("KLASSE"));
+            chipkaart.setSaldo(resultC.getFloat("SALDO"));
+
+            query = "SELECT * FROM REIZIGER WHERE REIZIGERID = ?";
+            PreparedStatement preparedStatementR = this.getConnection().prepareStatement(query);
+            preparedStatementR.setInt(1, resultC.getInt("REIZIGERID"));
+            ResultSet resultR = preparedStatementR.executeQuery();
+            while(resultR.next()){
+                Reiziger r = new Reiziger();
+                r.setReizigerID(resultR.getInt("REIZIGERID"));
+                r.setVoorletters(resultR.getString("VOORLETTERS"));
+                r.setTussenvoegsel(resultR.getString("TUSSENVOEGSEL"));
+                r.setAchternaam(resultR.getString("ACHTERNAAM"));
+                r.setGeboortedatum(resultR.getDate("GEBORTEDATUM"));
+                for(OVchipkaart c : new OVchipkaartOracleDaoImpl().findByReiziger(r)){
+                    r.voegOVChipkaartToe(c);
+                }
+                chipkaart.setEigenaar(r);
+            }
+            return chipkaart;
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public OVchipkaart save(OVchipkaart oVchipkaart) {
         try {
             String query;
