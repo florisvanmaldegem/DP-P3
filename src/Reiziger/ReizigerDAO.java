@@ -8,6 +8,8 @@ public interface ReizigerDAO {
 
     List<Reiziger> findByGbDatum(java.sql.Date gbDatum);
 
+    Reiziger findById(int id);
+
     Reiziger save(Reiziger reiziger);
 
     Reiziger update(Reiziger reiziger);

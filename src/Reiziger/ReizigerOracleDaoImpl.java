@@ -109,6 +109,39 @@ public class ReizigerOracleDaoImpl extends Application.OracleBaseDAO implements 
         }
     }
 
+    @Override
+    public Reiziger findById(int id) {
+
+        try {
+            String query = "SELECT * FROM REIZIGER WHERE REIZIGERID = ?";
+
+            // Create statement
+            PreparedStatement statement = this.getConnection().prepareStatement(query);
+            statement.setInt(1, id);
+
+            ResultSet result = statement.executeQuery();
+
+            while(result.next()){
+                Reiziger r = new Reiziger();
+                r.setReizigerID(id);
+                r.setVoorletters(result.getString("VOORLETTERS"));
+                r.setTussenvoegsel(result.getString("TUSSENVOEGSEL"));
+                r.setAchternaam(result.getString("ACHTERNAAM"));
+                r.setGeboortedatum(result.getDate("GEBORTEDATUM"));
+
+                for(OVchipkaart c : new OVchipkaartOracleDaoImpl().findByReiziger(r)){
+                    r.voegOVChipkaartToe(c);
+                }
+
+                return r;
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return null;
+    }
 
     @Override
     public Reiziger save(Reiziger reiziger) {
